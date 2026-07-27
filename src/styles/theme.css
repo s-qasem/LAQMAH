@@ -1,0 +1,29 @@
+:root {
+  --color-deep-burgundy: #5c1f2a;
+  --color-dark-burgundy: #2a080e;
+  --color-gold: #c89b3c;
+  --color-light-gold: #e2b85b;
+  --color-cream: #f8f3ec;
+  --color-near-black: #0b0908;
+  --color-dark-brown: #17100c;
+  --color-muted: #b8aea4;
+
+  --page-gutter: clamp(1rem, 4vw, 2rem);
+  --content-width: 80rem;
+  --content-width-narrow: 64rem;
+  --nav-height: 4.5rem;
+}
+
+@theme inline {
+  --color-deep-burgundy: var(--color-deep-burgundy);
+  --color-dark-burgundy: var(--color-dark-burgundy);
+  --color-gold: var(--color-gold);
+  --color-light-gold: var(--color-light-gold);
+  --color-cream: var(--color-cream);
+  --color-near-black: var(--color-near-black);
+  --color-dark-brown: var(--color-dark-brown);
+  --color-muted: var(--color-muted);
+  --font-sans: var(--font-body);
+  --font-serif: var(--font-heading);
+  --font-arabic: var(--font-arabic);
+}
