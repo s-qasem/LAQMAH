@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu, ShoppingBag, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -15,6 +15,11 @@ export function Navbar() {
   const panelRef = useRef<HTMLElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const overHero = pathname === "/" && !isScrolled && !isOpen;
+  const isActive = (href: string) => {
+    const route = href.split("#")[0];
+    if (href.includes("#reviews")) return pathname === "/reviews";
+    return pathname === route;
+  };
 
   useEffect(() => {
     const update = () => setIsScrolled(window.scrollY > 24);
@@ -48,18 +53,15 @@ export function Navbar() {
         </Link>
         <nav aria-label="Primary navigation" className="navbar__desktop">
           {navigation.map((item) => {
-            const active = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href.split("#")[0]);
+            const active = isActive(item.href);
             return <Link key={item.label} href={item.href} aria-current={active ? "page" : undefined}>{item.label}</Link>;
           })}
         </nav>
-        <Link href="/order" className="button navbar__order">Order Online</Link>
-        <Link href="/order" className="navbar__order-short" aria-label="Order online"><ShoppingBag /></Link>
         <button ref={toggleRef} type="button" className="navbar__toggle" aria-expanded={isOpen} aria-controls="mobile-nav" aria-label={isOpen ? "Close menu" : "Open menu"} onClick={() => setIsOpen((value) => !value)}>{isOpen ? <X /> : <Menu />}</button>
       </Container>
       {isOpen ? <nav ref={panelRef} id="mobile-nav" className="mobile-nav" aria-label="Mobile navigation">
         <p className="eyebrow">Navigate</p>
-        {navigation.map((item) => <Link key={item.label} href={item.href} onClick={() => setIsOpen(false)}>{item.label}</Link>)}
-        <Link href="/order" className="button button--primary" onClick={() => setIsOpen(false)}>Order Online</Link>
+        {navigation.map((item) => <Link key={item.label} href={item.href} aria-current={isActive(item.href) ? "page" : undefined} onClick={() => setIsOpen(false)}>{item.label}</Link>)}
       </nav> : null}
     </header>
   );

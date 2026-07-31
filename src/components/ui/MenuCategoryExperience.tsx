@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { Plus } from "lucide-react";
 import type { MenuCategory, MenuProduct } from "@/data/menu";
 import { images } from "@/data/images";
@@ -70,7 +69,7 @@ export function MenuCategoryExperience({ category, products, onSelect }: MenuCat
           <p className="eyebrow">{hero.eyebrow}</p>
           <h2 id="category-hero-title">{hero.heading.map((line, index) => <span key={line}>{line}{index < hero.heading.length - 1 ? <br /> : null}</span>)}</h2>
           <p>{hero.body}</p>
-          <div className="hot-coffee-hero__actions"><a className="button button--gold" href="#menu-collection">Explore Menu</a><Link className="button hot-coffee-hero__order" href="/order">Order Online</Link></div>
+          <div className="hot-coffee-hero__actions"><a className="button button--gold" href="#menu-collection">Explore Menu</a></div>
         </div>
         <div className={`hot-coffee-hero__visual${category === "Cold Drinks" ? " hot-coffee-hero__visual--cold" : ""}`} aria-hidden="true">
           {category === "Hot Drinks" ? <div className="hot-coffee-hero__steam"><span /><span /></div> : null}

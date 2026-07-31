@@ -4,7 +4,7 @@
 .navbar { position:fixed; z-index:100; inset:0 0 auto; height:var(--nav-height); border-bottom:1px solid transparent; transition:background-color .35s,border-color .35s,color .35s; }
 .navbar--solid { background:rgb(42 8 14 / 92%); border-color:rgb(226 184 91 / 18%); color:var(--color-cream); backdrop-filter:blur(14px); }
 .navbar--hero { color:var(--color-cream); }
-.navbar__inner { display:grid; grid-template-columns:160px minmax(0,1fr) auto auto; align-items:center; width:100%; max-width:none; height:100%; gap:clamp(1rem,2vw,2rem); padding-right:clamp(1.5rem,2.2vw,2rem); padding-left:clamp(1.5rem,2.2vw,2rem); }
+.navbar__inner { display:grid; grid-template-columns:160px minmax(0,1fr) auto; align-items:center; width:100%; max-width:none; height:100%; gap:clamp(1rem,2vw,2rem); padding-right:clamp(1.5rem,2.2vw,2rem); padding-left:clamp(1.5rem,2.2vw,2rem); }
 .navbar__brand { display:flex; width:fit-content; flex-direction:column; align-items:center; justify-content:center; color:var(--color-light-gold); line-height:.8; }
 .navbar__brand-arabic { font:400 1.65rem/.72 var(--font-arabic),serif; }
 .navbar__brand-english { margin-top:.28rem; font:600 .82rem/1 var(--font-heading),serif; letter-spacing:.18em; }
@@ -16,12 +16,13 @@
 .navbar__desktop a:hover::after,.navbar__desktop a[aria-current="page"]::after { transform:scaleX(1); }
 .navbar__order { min-height:2.65rem; border-color:var(--color-gold); background:rgb(11 9 8 / 18%); color:var(--color-light-gold); font-weight:600; letter-spacing:.08em; text-transform:uppercase; }
 .navbar__order:hover { background:rgb(92 31 42 / 58%); color:var(--color-cream); }
-.navbar__toggle { display:inline-flex; align-items:center; justify-content:center; width:2.75rem; height:2.75rem; border:0; background:none; color:var(--color-light-gold); }
+.navbar__toggle { display:none; align-items:center; justify-content:center; width:2.75rem; height:2.75rem; border:0; background:none; color:var(--color-light-gold); }
 .navbar__order-short { display:none; align-items:center; justify-content:center; width:2.75rem; height:2.75rem; border:0; background:none; color:var(--color-light-gold); }
 .navbar svg { width:1.2rem; }
-@media(max-width:900px){.navbar__inner{grid-template-columns:1fr auto auto;gap:.35rem}.navbar__brand-arabic{font-size:1.5rem}}
+@media(max-width:900px){.navbar__inner{grid-template-columns:1fr auto;gap:.35rem}.navbar__brand-arabic{font-size:1.5rem}}
 .mobile-nav { position:fixed; z-index:99; inset:var(--nav-height) 0 0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1rem; background:var(--color-dark-burgundy); color:var(--color-cream); }
 .mobile-nav>a:not(.button) { font:500 clamp(2rem,9vw,3.5rem)/1 var(--font-heading),serif; }
+.mobile-nav>a[aria-current="page"] { border-bottom:1px solid var(--color-light-gold); color:var(--color-light-gold); }
 .button { display:inline-flex; min-height:3rem; align-items:center; justify-content:center; border:1px solid transparent; padding:.75rem 1.4rem; font-size:.76rem; font-weight:700; transition:background-color .3s,color .3s,border-color .3s; }
 .button--primary { background:var(--color-deep-burgundy); color:var(--color-cream); }
 .button--primary:hover { border-color:var(--color-gold); background:var(--color-gold); color:var(--color-near-black); }

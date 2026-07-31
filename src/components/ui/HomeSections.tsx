@@ -116,6 +116,6 @@ export function HomeSections() {
 
     <section id="contact" className="section section--cream"><Container className="visit-grid"><div className="section-copy"><p className="eyebrow">Visit LQMAH</p><h2>COME FIND<br />YOUR FAVORITE TABLE</h2><div className="visit-details"><p><MapPin />LQMAH</p><p><Clock />{business.hours[0]}</p></div><div className="button-row"><Link className="button button--primary" href="/contact">Contact Us</Link><a className="button button--outline" href={lqmahLocation.directionsUrl} target="_blank" rel="noopener noreferrer" aria-label="Get directions to LQMAH on Google Maps">Get Directions</a></div></div><div className="map-placeholder"><iframe src={lqmahLocation.embedUrl} title="LQMAH location on Google Maps" loading="lazy" referrerPolicy="no-referrer-when-downgrade" /></div></Container></section>
 
-    <section className="final-cta"><Container><p className="arabic-accent" lang="ar">أهلاً بكم</p><h2>YOUR TABLE<br />IS WAITING</h2><p>Come for the coffee. Stay for the atmosphere.</p><div className="button-row"><Link className="button button--light" href="/menu">Explore Menu</Link><Link className="button button--outline-light" href="/order">Order Online</Link></div></Container></section>
+    <section className="final-cta"><Container><p className="arabic-accent" lang="ar">أهلاً بكم</p><h2>YOUR TABLE<br />IS WAITING</h2><p>Come for the coffee. Stay for the atmosphere.</p><div className="button-row"><Link className="button button--light" href="/menu">Explore Menu</Link></div></Container></section>
   </>;
 }
