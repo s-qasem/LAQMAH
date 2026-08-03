@@ -45,7 +45,7 @@ export function Navbar() {
   }, [isOpen]);
 
   return (
-    <header className={`navbar ${overHero ? "navbar--hero" : "navbar--solid"}`}>
+    <header className={`navbar ${overHero ? "navbar--hero" : "navbar--solid"}${isOpen ? " navbar--menu-open" : ""}`}>
       <Container className="navbar__inner">
         <Link href="/" className="navbar__brand" aria-label="LQMAH home">
           <span className="navbar__brand-arabic" lang="ar" aria-hidden="true">لقمة</span>
@@ -60,7 +60,6 @@ export function Navbar() {
         <button ref={toggleRef} type="button" className="navbar__toggle" aria-expanded={isOpen} aria-controls="mobile-nav" aria-label={isOpen ? "Close menu" : "Open menu"} onClick={() => setIsOpen((value) => !value)}>{isOpen ? <X /> : <Menu />}</button>
       </Container>
       {isOpen ? <nav ref={panelRef} id="mobile-nav" className="mobile-nav" aria-label="Mobile navigation">
-        <p className="eyebrow">Navigate</p>
         {navigation.map((item) => <Link key={item.label} href={item.href} aria-current={isActive(item.href) ? "page" : undefined} onClick={() => setIsOpen(false)}>{item.label}</Link>)}
       </nav> : null}
     </header>
