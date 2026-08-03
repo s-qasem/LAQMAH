@@ -19,7 +19,8 @@ const headlineLines = ["A PLACE TO", "GATHER, SIP &", "STAY AWHILE"] as const;
 export function Hero() {
   const heroRef = useRef<HTMLElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
-  const [imageFailed, setImageFailed] = useState(false);
+  const [desktopImageFailed, setDesktopImageFailed] = useState(false);
+  const [mobileImageFailed, setMobileImageFailed] = useState(false);
 
   useGSAP(
     () => {
@@ -107,15 +108,26 @@ export function Hero() {
       onPointerLeave={handlePointerLeave}
     >
       <div ref={sceneRef} className={styles.scene} aria-hidden="true">
-        {!imageFailed ? (
+        {!desktopImageFailed ? (
           <Image
             src={images.hero}
             alt=""
             fill
             priority
             sizes="100vw"
-            className={styles.image}
-            onError={() => setImageFailed(true)}
+            className={`${styles.image} ${styles.desktopImage}`}
+            onError={() => setDesktopImageFailed(true)}
+          />
+        ) : null}
+        {!mobileImageFailed ? (
+          <Image
+            src="/exterior/mobile-hero.png"
+            alt=""
+            fill
+            priority
+            sizes="(max-width: 767px) 100vw, 0px"
+            className={styles.mobileImage}
+            onError={() => setMobileImageFailed(true)}
           />
         ) : null}
       </div>
@@ -129,23 +141,25 @@ export function Hero() {
             <p className={styles.eyebrow}>More Than Coffee</p>
           </div>
 
-          <h1 id="hero-heading" className={styles.heading}>
-            {headlineLines.map((line) => (
-              <span key={line} className={styles.headingLine} data-hero-reveal>
-                {line}
-              </span>
-            ))}
-          </h1>
+          <div className={styles.mainContentGroup}>
+            <h1 id="hero-heading" className={styles.heading}>
+              {headlineLines.map((line) => (
+                <span key={line} className={styles.headingLine} data-hero-reveal>
+                  {line}
+                </span>
+              ))}
+            </h1>
 
-          <p className={styles.description} data-hero-reveal>
-            Specialty coffee, fresh juices, delicious desserts and good company.<br />
-            Welcome to LQMAH.
-          </p>
+            <p className={styles.description} data-hero-reveal>
+              Specialty coffee, fresh juices, delicious desserts and good company.<br />
+              Welcome to LQMAH.
+            </p>
 
-          <div className={styles.actions} data-hero-actions>
-            <a className={styles.primaryAction} href="/menu">
-              Explore Our Menu <ArrowRight aria-hidden="true" />
-            </a>
+            <div className={styles.actions} data-hero-actions>
+              <a className={styles.primaryAction} href="/menu">
+                Explore Our Menu <ArrowRight aria-hidden="true" />
+              </a>
+            </div>
           </div>
         </div>
       </Container>

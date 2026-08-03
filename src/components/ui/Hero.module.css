@@ -4,6 +4,7 @@
 }
 .scene { position: absolute; z-index: -3; inset: -2%; will-change: transform; }
 .image { object-fit: cover; object-position: 62% center; }
+.mobileImage { display: none; object-fit: contain; object-position: center; }
 .overlays {
   position: absolute; z-index: -2; inset: 0; pointer-events: none;
   background:
@@ -13,6 +14,7 @@
 }
 .contentShell { display: flex; align-items: flex-start; padding-top: clamp(11rem, 31vh, 18rem); padding-bottom: 7rem; }
 .content { position: relative; z-index: 2; width: min(100%, 29.375rem); }
+.mainContentGroup { display: contents; }
 .eyebrowRow { display: flex; align-items: center; gap: 1rem; margin-bottom: clamp(1.1rem, 2.5vh, 1.7rem); }
 .goldLine { width: clamp(2.75rem, 6vw, 5rem); height: 1px; background: var(--color-light-gold); }
 .eyebrow { margin: 0; color: var(--color-light-gold); font-size: .68rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }
@@ -38,16 +40,23 @@
   .heading { max-width: 28rem; font-size: clamp(3.125rem, 7.5vw, 3.75rem); }
   .decorativeCurve { left: 18%; width: 58vw; }
 }
+@media (max-width: 767px) {
+  .desktopImage { display: none; }
+  .mobileImage { display: block; }
+  .eyebrowRow { position: relative; top: -22px; }
+  .mainContentGroup { position: relative; top: 108px; display: block; }
+  .heading { margin-top: 1.25rem; font-size: clamp(1.9rem, 7.8vw, 2.35rem); line-height: .98; }
+  .description { font-size: clamp(.82rem, 3.2vw, .95rem); line-height: 1.45; }
+}
 @media (max-width: 600px) {
   .hero { height: clamp(38rem, 68svh, 40rem); min-height: 0; }
   .scene { inset: 0; background: var(--color-near-black); }
-  .image { object-fit: contain; object-position: 66% center; transform: scale(1.55); }
   .overlays { background: linear-gradient(90deg, rgb(7 6 5 / 90%) 0%, rgb(7 6 5 / 62%) 42%, rgb(7 6 5 / 18%) 100%), linear-gradient(0deg, rgb(11 9 8 / 54%), transparent 64%); }
   .contentShell { padding-top: clamp(7rem, 15vh, 9rem); padding-bottom: 2.5rem; }
   .content { width: min(82vw, 21rem); }
   .eyebrowRow { gap: .75rem; margin-bottom: .9rem; }
-  .heading { max-width: 21rem; font-size: clamp(2.5rem, 10.5vw, 2.875rem); line-height: .92; }
-  .description { max-width: 18rem; margin-top: 1rem; font-size: .9rem; line-height: 1.5; }
+  .heading { max-width: 21rem; }
+  .description { max-width: 18rem; margin-top: 1rem; }
   .actions { margin-top: 1.25rem; }
   .decorativeCurve { display: none; }
   .primaryAction { min-width: 0; padding-right: 1.25rem; padding-left: 1.25rem; }
