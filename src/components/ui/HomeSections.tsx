@@ -40,9 +40,13 @@ export function HomeSections() {
   const [featured, setFeatured] = useState(0);
 
   useGSAP(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return;
-    gsap.to("[data-dessert-image]", { scale: 1.06, xPercent: -2, ease: "none", scrollTrigger: { trigger: dessertRef.current, start: "top top", end: "bottom bottom", scrub: 1 } });
+    const media = gsap.matchMedia();
+
+    media.add("(max-width: 900px) and (prefers-reduced-motion: no-preference)", () => {
+      gsap.to("[data-dessert-image]", { scale: 1.06, xPercent: -2, ease: "none", scrollTrigger: { trigger: dessertRef.current, start: "top top", end: "bottom bottom", scrub: 1 } });
+    });
+
+    return () => media.revert();
   }, { scope: dessertRef });
 
   useGSAP(() => {
@@ -86,8 +90,7 @@ export function HomeSections() {
     <section ref={dessertRef} className="dessert-scene" aria-labelledby="dessert-title">
       <div className="dessert-sticky">
         <div className="dessert-visual" data-dessert-image>
-          {/* Add sequencePath/frameCount or videoSrc when production animation assets are delivered. */}
-          <ChocolateSequenceScene fallbackSrc={images.signatureDessert} alt="Clean cheesecake beneath a chocolate pot beside a white coffee cup and chess pieces" />
+          <ChocolateSequenceScene fallbackSrc={images.signatureDessert} videoSrc="/menu/videos/signature-scene.mp4" alt="Clean cheesecake beneath a chocolate pot beside a white coffee cup and chess pieces" />
         </div>
         <div className="dessert-shade" />
         <Container className="dessert-copy"><p className="eyebrow">The Signature Scene</p><h2 id="dessert-title">CRAFTED DAILY.<br />SERVED WITH PASSION.</h2><p className="arabic-accent" lang="ar">محضّرة يومياً بشغف</p><p>Premium ingredients, careful preparation, and flavors made to be remembered.</p><Link className="button button--light" href="/menu?category=Desserts">Discover Our Desserts</Link></Container>

@@ -130,6 +130,7 @@
 .dessert-shade { background:linear-gradient(90deg,rgb(11 9 8 / 82%) 0%,rgb(11 9 8 / 54%) 34%,rgb(11 9 8 / 8%) 67%,rgb(11 9 8 / 12%) 100%); }
 .dessert-copy { position:relative; z-index:4; }
 .dessert-copy p:not(.eyebrow,.arabic-accent) { max-width:30rem; color:var(--color-muted); }
+@media(min-width:901px){.dessert-scene{height:auto}.dessert-sticky{position:relative}}
 .coffee-steam { position:absolute; z-index:3; top:calc(var(--steam-y) - 9%); left:calc(var(--steam-x) - 2%); width:4%; height:9%; pointer-events:none; }
 .coffee-steam span { position:absolute; right:52%; bottom:0; width:8px; height:70%; border-radius:48% 52% 42% 58%; background:radial-gradient(ellipse at 50% 75%,rgb(238 230 218 / 18%),rgb(238 230 218 / 6%) 48%,transparent 72%); filter:blur(2.4px); opacity:0; transform-origin:bottom; animation:coffee-steam 6.2s ease-in-out infinite; }
 .coffee-steam span:nth-child(2) { right:25%; width:6px; height:58%; animation-delay:-2.8s; animation-duration:7s; }

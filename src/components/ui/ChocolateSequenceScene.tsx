@@ -95,7 +95,7 @@ export function ChocolateSequenceScene({ fallbackSrc, alt, sequencePath, frameCo
   }, [frameCount, reducedMotion, sequencePath, videoSrc]);
 
   useGSAP(() => {
-    if (reducedMotion || mode === "fallback") return;
+    if (reducedMotion || mode !== "sequence") return;
     const trigger = sceneRef.current?.closest<HTMLElement>(".dessert-scene");
     if (!trigger) return;
 
@@ -105,16 +105,10 @@ export function ChocolateSequenceScene({ fallbackSrc, alt, sequencePath, frameCo
       end: "bottom bottom",
       scrub: true,
       onUpdate: ({ progress }) => {
-        if (mode === "sequence") {
-          const frames = framesRef.current;
-          const frame = frames[Math.min(frames.length - 1, Math.round(progress * (frames.length - 1)))];
-          if (frame) drawFrame(frame);
-        } else if (mode === "video" && videoRef.current?.duration) {
-          videoRef.current.currentTime = progress * videoRef.current.duration;
-        }
+        const frames = framesRef.current;
+        const frame = frames[Math.min(frames.length - 1, Math.round(progress * (frames.length - 1)))];
+        if (frame) drawFrame(frame);
       },
-      onLeave: () => videoRef.current?.pause(),
-      onLeaveBack: () => videoRef.current?.pause(),
     });
 
     return () => scrollTrigger.kill();
@@ -124,7 +118,7 @@ export function ChocolateSequenceScene({ fallbackSrc, alt, sequencePath, frameCo
     <div ref={sceneRef} className="dessert-artboard">
       <Image src={fallbackSrc} alt={alt} fill sizes="100vw" className="dessert-sequence__fallback" />
       <canvas ref={canvasRef} className="dessert-sequence__canvas" hidden={mode !== "sequence"} aria-hidden="true" />
-      {videoSrc ? <video ref={videoRef} className="dessert-sequence__video" src={videoSrc} muted playsInline preload="metadata" controls={false} hidden={mode !== "video"} onError={() => setMode("fallback")} aria-hidden="true" /> : null}
+      {videoSrc ? <video ref={videoRef} className="dessert-sequence__video" src={videoSrc} poster={fallbackSrc} autoPlay muted loop playsInline preload="metadata" controls={false} hidden={mode !== "video"} onError={() => setMode("fallback")} aria-hidden="true" /> : null}
       <div className="coffee-steam" aria-hidden="true"><span /><span /></div>
     </div>
   );
