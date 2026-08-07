@@ -94,6 +94,21 @@ export function ChocolateSequenceScene({ fallbackSrc, alt, sequencePath, frameCo
     return () => { cancelled = true; };
   }, [frameCount, reducedMotion, sequencePath, videoSrc]);
 
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || mode !== "video" || reducedMotion) return;
+
+    const play = () => {
+      video.muted = true;
+      video.defaultMuted = true;
+      void video.play().catch(() => {});
+    };
+
+    play();
+    video.addEventListener("canplay", play, { once: true });
+    return () => video.removeEventListener("canplay", play);
+  }, [mode, reducedMotion]);
+
   useGSAP(() => {
     if (reducedMotion || mode !== "sequence") return;
     const trigger = sceneRef.current?.closest<HTMLElement>(".dessert-scene");
