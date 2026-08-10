@@ -90,7 +90,7 @@ export function HomeSections() {
     <section ref={dessertRef} className="dessert-scene" aria-labelledby="dessert-title">
       <div className="dessert-sticky">
         <div className="dessert-visual" data-dessert-image>
-          <ChocolateSequenceScene fallbackSrc={images.signatureDessert} videoSrc="/menu/videos/signature-scene.mp4" alt="Clean cheesecake beneath a chocolate pot beside a white coffee cup and chess pieces" />
+          <ChocolateSequenceScene fallbackSrc={images.signatureDessert} videoSrc="/menu/videos/signature-scene2.mp4" alt="Clean cheesecake beneath a chocolate pot beside a white coffee cup and chess pieces" />
         </div>
         <div className="dessert-shade" />
         <Container className="dessert-copy"><p className="eyebrow">The Signature Scene</p><h2 id="dessert-title">CRAFTED DAILY.<br />SERVED WITH PASSION.</h2><p className="arabic-accent" lang="ar">محضّرة يومياً بشغف</p><p>Premium ingredients, careful preparation, and flavors made to be remembered.</p><Link className="button button--light" href="/menu?category=Desserts">Discover Our Desserts</Link></Container>

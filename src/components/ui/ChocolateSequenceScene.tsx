@@ -29,7 +29,6 @@ export function ChocolateSequenceScene({ fallbackSrc, alt, sequencePath, frameCo
   const framesRef = useRef<HTMLImageElement[]>([]);
   const [mode, setMode] = useState<SceneMode>("fallback");
   const [reducedMotion, setReducedMotion] = useState(false);
-  const [videoPlaying, setVideoPlaying] = useState(false);
 
   const drawFrame = (frame: HTMLImageElement) => {
     const canvas = canvasRef.current;
@@ -102,13 +101,7 @@ export function ChocolateSequenceScene({ fallbackSrc, alt, sequencePath, frameCo
     const play = () => {
       video.muted = true;
       video.defaultMuted = true;
-      void video.play()
-        .then(() => setVideoPlaying(true))
-        .catch(() => {
-          if (window.matchMedia("(max-width: 900px)").matches) {
-            setMode("fallback");
-          }
-        });
+      void video.play().catch(() => {});
     };
 
     play();
@@ -140,7 +133,7 @@ export function ChocolateSequenceScene({ fallbackSrc, alt, sequencePath, frameCo
     <div ref={sceneRef} className="dessert-artboard">
       <Image src={fallbackSrc} alt={alt} fill sizes="100vw" className="dessert-sequence__fallback" />
       <canvas ref={canvasRef} className="dessert-sequence__canvas" hidden={mode !== "sequence"} aria-hidden="true" />
-      {videoSrc ? <video ref={videoRef} className="dessert-sequence__video" src={videoSrc} poster={fallbackSrc} autoPlay muted loop playsInline preload="metadata" controls={false} hidden={mode !== "video"} data-playing={videoPlaying} onError={() => setMode("fallback")} aria-hidden="true" /> : null}
+      {videoSrc ? <video ref={videoRef} className="dessert-sequence__video" src={videoSrc} poster={fallbackSrc} autoPlay muted loop playsInline preload="metadata" controls={false} hidden={mode !== "video"} onError={() => setMode("fallback")} aria-hidden="true" /> : null}
       <div className="coffee-steam" aria-hidden="true"><span /><span /></div>
     </div>
   );

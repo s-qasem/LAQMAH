@@ -4,6 +4,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { ArrowDown, ArrowRight } from "lucide-react";
 import { useRef, useState, type PointerEvent } from "react";
 
@@ -17,6 +18,7 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
 const headlineLines = ["A PLACE TO", "GATHER, SIP &", "STAY AWHILE"] as const;
 
 export function Hero() {
+  const pathname = usePathname();
   const heroRef = useRef<HTMLElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
   const [desktopImageFailed, setDesktopImageFailed] = useState(false);
@@ -24,6 +26,8 @@ export function Hero() {
 
   useGSAP(
     () => {
+      if (pathname !== "/") return;
+
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       if (reduceMotion) {
@@ -81,7 +85,7 @@ export function Hero() {
         yoyo: true,
       });
     },
-    { scope: heroRef },
+    { scope: heroRef, dependencies: [pathname], revertOnUpdate: true },
   );
 
   const handlePointerMove = (event: PointerEvent<HTMLElement>) => {
