@@ -20,7 +20,7 @@
 .eyebrow { margin: 0; color: var(--color-light-gold); font-size: .68rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }
 .heading { max-width: 29.375rem; margin: 0; color: #d8ccbc; font-size: clamp(3.75rem, 4.75vw, 4.375rem); font-weight: 500; line-height: .96; text-wrap: balance; text-shadow: 0 2px 18px rgb(0 0 0 / 32%); }
 .headingLine { display: block; width: fit-content; }
-.description { max-width: 28rem; margin: clamp(1.25rem, 2.5vh, 1.75rem) 0 0; color: #bfb5aa; font-size: clamp(1.05rem, 1.2vw, 1.2rem); line-height: 1.65; }
+.description { max-width: 28rem; margin: clamp(1.25rem, 2.5vh, 1.75rem) 0 0; color: #bfb5aa; font-size: clamp(1.05rem, 1.2vw, 1.2rem); line-height: 1.65; white-space: pre-line; }
 .actions { display: flex; margin-top: clamp(1.5rem, 3vh, 2.25rem); }
 .primaryAction { display: inline-flex; min-height: 3rem; align-items: center; justify-content: center; gap: .75rem; border: 1px solid var(--color-gold); padding: .72rem 1.65rem; background: var(--color-deep-burgundy); color: var(--color-cream); font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; transition: background-color 300ms ease, color 300ms ease; }
 .primaryAction svg { width: 1rem; transition: transform 300ms ease; }

@@ -9,15 +9,13 @@ import { ArrowDown, ArrowRight } from "lucide-react";
 import { useRef, useState, type PointerEvent } from "react";
 
 import { Container } from "@/components/layout/Container";
-import { images } from "@/data/images";
+import type { HeroContent } from "@/data/hero";
 
 import styles from "./Hero.module.css";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const headlineLines = ["A PLACE TO", "GATHER, SIP &", "STAY AWHILE"] as const;
-
-export function Hero() {
+export function Hero({ content }: { content: HeroContent }) {
   const pathname = usePathname();
   const heroRef = useRef<HTMLElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
@@ -114,7 +112,7 @@ export function Hero() {
       <div ref={sceneRef} className={styles.scene} aria-hidden="true">
         {!desktopImageFailed ? (
           <Image
-            src={images.hero}
+            src={content.desktopImageUrl}
             alt=""
             fill
             priority
@@ -125,7 +123,7 @@ export function Hero() {
         ) : null}
         {!mobileImageFailed ? (
           <Image
-            src="/exterior/mobile-hero.png"
+            src={content.mobileImageUrl}
             alt=""
             fill
             priority
@@ -142,12 +140,12 @@ export function Hero() {
         <div className={styles.content}>
           <div className={styles.eyebrowRow} data-hero-reveal>
             <span className={styles.goldLine} data-hero-line />
-            <p className={styles.eyebrow}>More Than Coffee</p>
+            <p className={styles.eyebrow}>{content.eyebrow}</p>
           </div>
 
           <div className={styles.mainContentGroup}>
             <h1 id="hero-heading" className={styles.heading}>
-              {headlineLines.map((line) => (
+              {content.headlineLines.map((line) => (
                 <span key={line} className={styles.headingLine} data-hero-reveal>
                   {line}
                 </span>
@@ -155,13 +153,12 @@ export function Hero() {
             </h1>
 
             <p className={styles.description} data-hero-reveal>
-              Specialty coffee, fresh juices, delicious desserts and good company.<br />
-              Welcome to LQMAH.
+              {content.description}
             </p>
 
             <div className={styles.actions} data-hero-actions>
-              <a className={styles.primaryAction} href="/menu">
-                Explore Our Menu <ArrowRight aria-hidden="true" />
+              <a className={styles.primaryAction} href={content.buttonHref}>
+                {content.buttonLabel} <ArrowRight aria-hidden="true" />
               </a>
             </div>
           </div>
