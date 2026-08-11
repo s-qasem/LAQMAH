@@ -1,5 +1,29 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Supabase
+
+Copy `.env.example` to `.env.local` and add the project URL and anon key. The local
+development environment is already configured on this machine.
+
+- Use `createServerSupabaseClient` from `src/lib/supabase/server.ts` in Server
+  Components, Server Actions, and Route Handlers.
+- Use `createBrowserSupabaseClient` from `src/lib/supabase/client.ts` in Client
+  Components.
+
+The anon key is safe to expose to the browser only when every table has appropriate
+Row Level Security policies. Never place a Supabase service-role key in a
+`NEXT_PUBLIC_` variable.
+
+### Homepage hero content
+
+Run `supabase/migrations/20260811000000_create_homepage_hero.sql` in the Supabase
+SQL Editor. Then edit the single `homepage_hero` row in the Table Editor. Changes
+are refreshed on the website within about 60 seconds.
+
+Hero images can be uploaded to the public `website-content` Storage bucket. Paste
+their public URLs into `desktop_image_url` and `mobile_image_url`. Anonymous website
+visitors can read published hero content and images, but cannot modify them.
+
 ## Getting Started
 
 First, run the development server:
