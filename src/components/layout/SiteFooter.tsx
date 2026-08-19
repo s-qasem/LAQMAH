@@ -12,7 +12,7 @@ export function SiteFooter() {
         <div><h2>Visit</h2><p><a href="https://maps.app.goo.gl/DFKXSAyDmfVc6RmW6" target="_blank" rel="noopener noreferrer">3065 Oakwood Blvd Ste D, Melvindale, MI 48122</a></p><p>Monday–Thursday: 10:00 AM–10:00 PM<br />Friday–Saturday: 10:00 AM–11:00 PM<br />Sunday: 10:00 AM–10:00 PM</p><p><a href="tel:+13137224149">(313) 722-4149</a></p></div>
         <div><h2>Follow</h2><div className="social-row"><a href="https://www.instagram.com/lqmah_bakery/" target="_blank" rel="noopener noreferrer" aria-label="Follow LQMAH on Instagram"><InstagramIcon /><span>@lqmah_bakery</span></a><a href="https://www.tiktok.com/@lqmah_bakery" target="_blank" rel="noopener noreferrer" aria-label="Follow LQMAH on TikTok"><TikTokIcon /><span>@lqmah_bakery</span></a></div></div>
       </Container>
-      <Container className="footer-bottom"><span>© {new Date().getFullYear()} LQMAH Cafe & Bakery</span></Container>
+      <Container className="footer-bottom"><span>© {new Date().getFullYear()} LQMAH Cafe & Bakery</span><span className="footer-credit">Designed &amp; Developed by <a href="https://wa.me/905352973229" target="_blank" rel="noopener noreferrer">ArtiCode</a></span></Container>
     </footer>
   );
 }
