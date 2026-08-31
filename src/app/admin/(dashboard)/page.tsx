@@ -3,6 +3,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 import { AdminPageHeader, AdminStatsSection, AdminText, StatCard } from "@/components/admin";
+
+import { PasswordCard } from "./PasswordCard";
 import type { AdminTranslationKey } from "@/data/admin-i18n";
 import { countMenuCategories } from "@/lib/supabase/menu-categories";
 import { countMenuProducts } from "@/lib/supabase/menu-products";
@@ -107,6 +109,7 @@ export default async function AdminDashboardPage() {
           })}
         </ul>
       </section>
+      <PasswordCard />
     </div>
   );
 }

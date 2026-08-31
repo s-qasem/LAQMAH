@@ -177,11 +177,20 @@ const PRICE_FORMATTER = new Intl.NumberFormat("en-US", {
  *   "5.5"  -> "$5.50"
  *   "5.99" -> "$5.99"
  */
-export function formatMenuPrice(price: string | null | undefined): string {
-  if (price === null || price === undefined || price.trim() === "") return PRICE_UNAVAILABLE_LABEL;
+export function formatMenuPrice(
+  price: string | null | undefined,
+  /**
+   * Shown when there is no usable price. Defaults to the customer-facing
+   * phrase, so every public caller behaves exactly as before; the admin passes
+   * its own wording, because "Price available in store" is copy for visitors,
+   * not for the dashboard.
+   */
+  unavailableLabel: string = PRICE_UNAVAILABLE_LABEL,
+): string {
+  if (price === null || price === undefined || price.trim() === "") return unavailableLabel;
 
   const value = Number(price);
-  if (!Number.isFinite(value)) return PRICE_UNAVAILABLE_LABEL;
+  if (!Number.isFinite(value)) return unavailableLabel;
 
   return PRICE_FORMATTER.format(value);
 }

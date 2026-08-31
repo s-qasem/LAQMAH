@@ -1567,7 +1567,7 @@ body:has(.admin-shell) .site-footer {
   .admin-sidebar__collapse,
   .admin-brand__english,
   .admin-sidebar__user,
-  .admin-nav__group-label {
+  .admin-sidebar .admin-nav__group-label {
     display: none;
   }
 
@@ -1585,13 +1585,22 @@ body:has(.admin-shell) .site-footer {
     margin: 0.5rem 0;
   }
 
-  .admin-nav__link,
-  .admin-nav__link--nested {
+  /*
+   * Scoped to .admin-sidebar on purpose.
+   *
+   * `renderNavigation()` in AdminShell is shared by the sidebar and the mobile
+   * drawer, so an unscoped rule here collapsed the drawer to icons as well and
+   * left it with no readable labels. The sidebar still becomes an icon rail
+   * below 1023px; the drawer keeps full labels, which is the whole point of
+   * opening it.
+   */
+  .admin-sidebar .admin-nav__link,
+  .admin-sidebar .admin-nav__link--nested {
     justify-content: center;
     padding: 0.7rem 0.5rem;
   }
 
-  .admin-nav__label {
+  .admin-sidebar .admin-nav__label {
     display: none;
   }
 }
@@ -2455,11 +2464,36 @@ button.admin-state:disabled {
 }
 
 .admin-product__price {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
   margin: 0;
+  white-space: nowrap;
+}
+
+/* Same small gold caps the rest of the dashboard uses for field labels. */
+.admin-product__price-label {
+  color: var(--color-gold);
+  font-family: var(--font-body), sans-serif;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* Arabic has no uppercase, and the tracking would break the word apart. */
+.admin-layout[lang="ar"] .admin-product__price-label {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.admin-product__price-value {
   font-family: var(--font-heading), serif;
   font-size: 1.25rem;
   font-variant-numeric: tabular-nums;
-  white-space: nowrap;
+  /* A currency amount is always LTR, even in the Arabic dashboard. */
+  direction: ltr;
+  unicode-bidi: isolate;
 }
 
 .admin-product__flags {
@@ -2642,6 +2676,10 @@ button.admin-state:disabled {
 
   .admin-product__price {
     grid-column: 2;
+  }
+
+  /* The value carries its own size now, so the narrow-screen step goes here. */
+  .admin-product__price-value {
     font-size: 1.1rem;
   }
 
@@ -2912,4 +2950,28 @@ a.admin-cat__products:hover {
   .admin-picker__option {
     transition: none;
   }
+}
+
+/* Password recovery: a success notice and the secondary links beneath a form. */
+.admin-auth__notice {
+  margin: 0;
+  border-inline-start: 2px solid var(--color-light-gold);
+  padding: 0.65rem 0.85rem;
+  background: rgb(226 184 91 / 8%);
+  color: var(--color-cream);
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.admin-auth__aside {
+  margin: 0;
+  color: var(--admin-muted, #b8aea4);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.admin-auth__aside a {
+  color: var(--color-light-gold);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 
@@ -52,6 +53,10 @@ export function LoginForm() {
       </p>
 
       <SubmitButton />
+
+      <p className="admin-auth__aside">
+        <Link href="/admin/forgot-password">Forgot password?</Link>
+      </p>
     </form>
   );
 }

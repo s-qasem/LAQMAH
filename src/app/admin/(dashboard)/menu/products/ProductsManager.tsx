@@ -14,6 +14,7 @@ import {
   useAdminLanguage,
 } from "@/components/admin";
 import type { AdminTranslationKey } from "@/data/admin-i18n";
+import { formatMenuPrice } from "@/data/menu-presentation";
 import type { MenuCategory } from "@/lib/supabase/menu-categories";
 import type { MenuProductRecord, ProductErrorCode, ProductErrors } from "@/lib/supabase/menu-products";
 
@@ -252,8 +253,21 @@ export function ProductsManager({ products, categories, scopedCategory }: Produc
                 </p>
               </div>
 
+              {/*
+                * Reuses the public currency formatter so the dashboard and the
+                * site can never disagree about how a stored value reads. Only
+                * the "no price" wording differs: the customer-facing phrase is
+                * not appropriate inside the admin.
+                */}
               <p className="admin-product__price">
-                {product.price ?? <span className="admin-product__price-unset">{t("products.priceUnset")}</span>}
+                <span className="admin-product__price-label">{t("products.field.price")}</span>
+                <span
+                  className={
+                    product.price ? "admin-product__price-value" : "admin-product__price-unset"
+                  }
+                >
+                  {formatMenuPrice(product.price, t("products.priceNotSet"))}
+                </span>
               </p>
 
               <div className="admin-product__flags">

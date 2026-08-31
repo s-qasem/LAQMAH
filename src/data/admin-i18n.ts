@@ -195,6 +195,7 @@ const en = {
   "products.emptyCategory": "No products in {name} yet.",
   "products.addFirst": "Add first product",
   "products.priceUnset": "Price in store",
+  "products.priceNotSet": "Not set",
   "products.field.priceHint": "Leave empty to show \u201cPrice available in store\u201d.",
   "products.delete.confirmTitle": "Delete {name}?",
   "products.delete.confirmBody": "This will remove the product from the public menu.",
@@ -496,6 +497,14 @@ const en = {
   "homepage.section.cta": "Final Call To Action",
   "homepage.section.cta.summary": "Closing panel with the ordering and contact links.",
   "homepage.save": "Save section",
+
+  // Account security
+  "security.card.title": "Password",
+  "security.card.description": "Change the password used to sign in to this dashboard.",
+  "security.newPassword": "New password",
+  "security.confirmPassword": "Confirm new password",
+  "security.hint": "At least 8 characters.",
+  "security.save": "Update Password",
 
   // Homepage section editors (20260829 migrations).
   "homepage.sec.welcome.title": "Welcome Banner",
@@ -810,6 +819,7 @@ const ar: Record<AdminTranslationKey, string> = {
   "products.emptyCategory": "لا توجد منتجات في {name} بعد.",
   "products.addFirst": "إضافة أول منتج",
   "products.priceUnset": "السعر في المقهى",
+  "products.priceNotSet": "غير محدّد",
   "products.field.priceHint": "اتركه فارغاً لعرض \u201cالسعر متوفر في المقهى\u201d.",
   "products.delete.confirmTitle": "حذف {name}؟",
   "products.delete.confirmBody": "سيؤدي هذا إلى إزالة المنتج من القائمة العامة.",
@@ -1106,6 +1116,14 @@ const ar: Record<AdminTranslationKey, string> = {
   "homepage.section.cta": "دعوة الإجراء الختامية",
   "homepage.section.cta.summary": "اللوحة الختامية مع روابط الطلب والتواصل.",
   "homepage.save": "حفظ القسم",
+
+  // Account security
+  "security.card.title": "كلمة المرور",
+  "security.card.description": "تغيير كلمة المرور المستخدمة لتسجيل الدخول إلى لوحة التحكم.",
+  "security.newPassword": "كلمة المرور الجديدة",
+  "security.confirmPassword": "تأكيد كلمة المرور",
+  "security.hint": "٨ أحرف على الأقل.",
+  "security.save": "تحديث كلمة المرور",
 
   // Homepage section editors (20260829 migrations).
   "homepage.sec.welcome.title": "لافتة الترحيب",
