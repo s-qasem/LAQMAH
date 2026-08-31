@@ -2,16 +2,20 @@
 
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { galleryImages } from "@/data/images";
+import type { PublicGalleryImage } from "@/lib/supabase/gallery-public";
 import { MediaFallback } from "./MediaFallback";
 
-const categories = ["All", "Exterior", "Interior", "Drinks", "Desserts", "Atmosphere"];
+type GalleryExplorerProps = {
+  images: PublicGalleryImage[];
+  /** Filter tabs, already ordered; "All" first. */
+  categories: string[];
+};
 
-export function GalleryExplorer() {
+export function GalleryExplorer({ images, categories }: GalleryExplorerProps) {
   const [category, setCategory] = useState("All");
   const [active, setActive] = useState<number | null>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
-  const filtered = galleryImages.filter((image) => category === "All" || image.category === category);
+  const filtered = images.filter((image) => category === "All" || image.category === category);
   useEffect(() => {
     if (active === null) return;
     closeRef.current?.focus(); document.body.style.overflow = "hidden";

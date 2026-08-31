@@ -5,6 +5,7 @@ import { AnimationProvider } from "@/components/animations/AnimationProvider";
 import { SmoothScrollProvider } from "@/components/animations/SmoothScrollProvider";
 import { Navbar } from "@/components/navigation/Navbar";
 import { SiteFooter } from "@/components/layout/SiteFooter";
+import { SITE_URL } from "@/lib/site-url";
 
 import "./globals.css";
 import "../styles/site.css";
@@ -29,6 +30,8 @@ const arabicFont = Aref_Ruqaa({
 });
 
 export const metadata: Metadata = {
+  // Resolves relative metadata URLs against the real production origin.
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "LQMAH",
     template: "%s | LQMAH",

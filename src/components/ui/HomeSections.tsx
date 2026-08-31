@@ -9,13 +9,18 @@ import { useRef, useState } from "react";
 
 import { Container } from "@/components/layout/Container";
 import { images } from "@/data/images";
-import { featuredProducts, menuCategories } from "@/data/menu";
-import { business, testimonials } from "@/data/site";
+import { categoryPresentation, formatMenuPrice, railImageFor } from "@/data/menu-presentation";
+import type { PublicCategory, PublicProduct } from "@/lib/supabase/menu-public";
+import type { PublicContact } from "@/lib/supabase/contact-public";
+import type { HomepageSection, PublicHomepage } from "@/lib/supabase/homepage-public";
+import type { PublicReview } from "@/lib/supabase/reviews-public";
 import { MediaFallback } from "./MediaFallback";
 import { ChocolateSequenceScene } from "./ChocolateSequenceScene";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
+// Hard-coded by decision: the five chips are part of the banner's fixed
+// five-column grid, not editable content.
 const atmosphereFeatures = [
   { label: "Chess", Icon: Crown },
   { label: "Card Games", Icon: GalleryVerticalEnd },
@@ -24,22 +29,73 @@ const atmosphereFeatures = [
   { label: "Great Coffee", Icon: Coffee },
 ] as const;
 
-const homepageCategoryImages = {
-  Sandwiches: images.sandwiches.grilledChicken,
-  Desserts: images.desserts.cookie,
-} as const;
+/**
+ * Heading lines render inside one h2, exactly as before: a single line when
+ * there is no second, otherwise the two separated by a break.
+ */
+function headingContent(section: HomepageSection) {
+  return section.headingLine2 ? (
+    <>
+      {section.headingLine1}
+      <br />
+      {section.headingLine2}
+    </>
+  ) : (
+    section.headingLine1
+  );
+}
 
-const lqmahLocation = {
-  directionsUrl: "https://maps.app.goo.gl/DFKXSAyDmfVc6RmW6",
-  embedUrl: "https://www.google.com/maps?q=42.2820387,-83.175805&z=16&output=embed",
-} as const;
+/**
+ * Filled stars follow the stored rating instead of a fixed five glyphs.
+ *
+ * The row keeps its five-glyph width and its existing gold styling, and the
+ * accessible label is derived from the same clamped value the visitor sees, so
+ * the two can no longer disagree. Ratings outside 0-5, or a non-numeric value,
+ * are clamped rather than producing a broken row.
+ */
+function ReviewStars({ rating }: { rating: number }) {
+  const filled = Math.max(0, Math.min(5, Math.round(Number(rating) || 0)));
 
-export function HomeSections() {
+  return (
+    <div aria-label={`${filled} out of 5 stars`}>
+      {"★".repeat(filled)}
+      {"☆".repeat(5 - filled)}
+    </div>
+  );
+}
+
+type HomeSectionsProps = {
+  categories: PublicCategory[];
+  products: PublicProduct[];
+  reviews: PublicReview[];
+  contact: PublicContact;
+  homepage: PublicHomepage;
+};
+
+export function HomeSections({ categories, products, reviews, contact, homepage }: HomeSectionsProps) {
+  // Popular/featured is a computed view, exactly as before.
+  const featuredProducts = products.filter((item) => item.featured);
   const welcomeRef = useRef<HTMLElement>(null);
   const dessertRef = useRef<HTMLElement>(null);
   const [featured, setFeatured] = useState(0);
 
+  // A null section was unpublished by an administrator, so it renders nothing.
+  const { sections, atmosphereImages } = homepage;
+  const welcome = sections.welcome;
+  const signature = sections.signature_scene;
+  const menuSection = sections.menu;
+  const featuredSection = sections.featured;
+  const atmosphere = sections.atmosphere;
+  const interiorStory = sections.interior_story;
+  const reviewsSection = sections.reviews;
+  const visit = sections.visit;
+  const finalCta = sections.final_cta;
+
   useGSAP(() => {
+    // The Signature Scene can be unpublished, in which case there is nothing to
+    // animate and no trigger element for ScrollTrigger to measure.
+    if (!dessertRef.current) return;
+
     const media = gsap.matchMedia();
 
     media.add("(max-width: 900px) and (prefers-reduced-motion: no-preference)", () => {
@@ -50,6 +106,8 @@ export function HomeSections() {
   }, { scope: dessertRef });
 
   useGSAP(() => {
+    // Same guard for the Welcome Banner.
+    if (!welcomeRef.current) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const timeline = gsap.timeline({
@@ -69,56 +127,57 @@ export function HomeSections() {
     });
   }, { scope: welcomeRef });
 
-  const product = featuredProducts[featured];
+  const product = featuredProducts[Math.min(featured, Math.max(featuredProducts.length - 1, 0))];
 
   return <>
-    <section ref={welcomeRef} id="welcome" className="welcome-banner" aria-labelledby="welcome-title">
+    {welcome ? <section ref={welcomeRef} id="welcome" className="welcome-banner" aria-labelledby="welcome-title">
       <div className="welcome-banner__image" data-welcome-image>
-        <MediaFallback src={images.intro} alt="LQMAH café interior with pastry counter, seating, and warm lighting" sizes="100vw" position="center 47%" />
+        <MediaFallback src={welcome.imageUrl ?? images.intro} alt={welcome.imageAlt ?? ""} sizes="100vw" position="center 47%" />
       </div>
       <div className="welcome-banner__shade" aria-hidden="true" />
       <Container className="welcome-banner__content">
-        <h2 id="welcome-title" data-welcome-heading>COFFEE. CONVERSATION.<br />EVERY MATCH.</h2>
+        <h2 id="welcome-title" data-welcome-heading>{headingContent(welcome)}</h2>
         <ul className="welcome-banner__features" aria-label="LQMAH atmosphere features">
           {atmosphereFeatures.map(({ label, Icon }) => (
             <li key={label} data-welcome-feature><Icon aria-hidden="true" strokeWidth={1.35} /><span>{label}</span></li>
           ))}
         </ul>
       </Container>
-    </section>
+    </section> : null}
 
-    <section ref={dessertRef} className="dessert-scene" aria-labelledby="dessert-title">
+    {signature ? <section ref={dessertRef} className="dessert-scene" aria-labelledby="dessert-title">
       <div className="dessert-sticky">
         <div className="dessert-visual" data-dessert-image>
-          <ChocolateSequenceScene fallbackSrc={images.signatureDessert} videoSrc="/menu/videos/signature-scene2.mp4" alt="Clean cheesecake beneath a chocolate pot beside a white coffee cup and chess pieces" />
+          {/* The video file itself stays hard-coded by decision; only its poster is managed. */}
+          <ChocolateSequenceScene fallbackSrc={signature.imageUrl ?? images.signatureDessert} videoSrc="/menu/videos/signature-scene2.mp4" alt={signature.imageAlt ?? ""} />
         </div>
         <div className="dessert-shade" />
-        <Container className="dessert-copy"><p className="eyebrow">The Signature Scene</p><h2 id="dessert-title">CRAFTED DAILY.<br />SERVED WITH PASSION.</h2><p className="arabic-accent" lang="ar">محضّرة يومياً بشغف</p><p>Premium ingredients, careful preparation, and flavors made to be remembered.</p><Link className="button button--light" href="/menu?category=Desserts">Discover Our Desserts</Link></Container>
+        <Container className="dessert-copy">{signature.eyebrow ? <p className="eyebrow">{signature.eyebrow}</p> : null}<h2 id="dessert-title">{headingContent(signature)}</h2>{signature.arabicAccent ? <p className="arabic-accent" lang="ar">{signature.arabicAccent}</p> : null}{signature.body ? <p>{signature.body}</p> : null}{signature.ctaLabel && signature.ctaHref ? <Link className="button button--light" href={signature.ctaHref}>{signature.ctaLabel}</Link> : null}</Container>
       </div>
-    </section>
+    </section> : null}
 
-    <section id="menu" className="section section--dark">
-      <Container><div className="section-heading"><p className="eyebrow">Made For Every Mood</p><h2>EXPLORE OUR MENU</h2><Link className="text-link text-link--light" href="/menu">View full menu <ArrowRight /></Link></div>
-        <div className="category-rail">{menuCategories.slice(1).map((category, index) => { const item = featuredProducts.find((entry) => entry.category === category) ?? featuredProducts[index % featuredProducts.length]; const categoryImage = category in homepageCategoryImages ? homepageCategoryImages[category as keyof typeof homepageCategoryImages] : item.image; return <Link key={category} className="category-panel" href={`/menu?category=${encodeURIComponent(category)}`}><MediaFallback src={categoryImage} alt={category in homepageCategoryImages ? `${category} category` : item.name} sizes="(max-width: 768px) 80vw, 30vw" /><span>0{index + 1}</span><h3>{category}</h3><p>{category === "Desserts" ? "Handcrafted finishes worth lingering over." : "Carefully prepared for the rhythm of your day."}</p></Link>; })}</div>
+    {menuSection ? <section id="menu" className="section section--dark">
+      <Container><div className="section-heading">{menuSection.eyebrow ? <p className="eyebrow">{menuSection.eyebrow}</p> : null}<h2>{headingContent(menuSection)}</h2>{menuSection.ctaLabel && menuSection.ctaHref ? <Link className="text-link text-link--light" href={menuSection.ctaHref}>{menuSection.ctaLabel} <ArrowRight /></Link> : null}</div>
+        <div className="category-rail">{categories.map((category, index) => { const item = featuredProducts.find((entry) => entry.categorySlug === category.slug) ?? featuredProducts[index % Math.max(featuredProducts.length, 1)]; const categoryImage = railImageFor(category.slug, category.imageUrl, item?.image); return <Link key={category.slug} className="category-panel" href={`/menu?category=${encodeURIComponent(category.name)}`}><MediaFallback src={categoryImage} alt={`${category.name} category`} sizes="(max-width: 768px) 80vw, 30vw" /><span>0{index + 1}</span><h3>{category.name}</h3><p>{categoryPresentation(category.slug).blurb}</p></Link>; })}</div>
       </Container>
-    </section>
+    </section> : null}
 
-    <section className="section section--cream featured-products-section">
-      <Container><div className="featured-products__intro"><p className="eyebrow">House Favorites</p></div>
-        <div className="featured-showcase"><MediaFallback key={product.id} className="featured-image" src={product.image} alt={product.name} sizes="(max-width: 768px) 100vw, 65vw" fit="cover" /><div className="featured-detail"><p className="eyebrow">{product.category}</p><h3>{product.name}</h3><p>{product.description}</p><p className="availability">Price available in store</p><div className="product-tabs" role="tablist" aria-label="Featured products">{featuredProducts.map((item, index) => <button key={item.id} role="tab" aria-selected={featured === index} onClick={() => setFeatured(index)}>{item.name}</button>)}</div></div></div>
+    {product && featuredSection ? <section className="section section--cream featured-products-section">
+      <Container><div className="featured-products__intro">{featuredSection.eyebrow ? <p className="eyebrow">{featuredSection.eyebrow}</p> : null}</div>
+        <div className="featured-showcase"><MediaFallback key={product.id} className="featured-image" src={product.image} alt={product.name} sizes="(max-width: 768px) 100vw, 65vw" fit="cover" /><div className="featured-detail"><p className="eyebrow">{categories.find((entry) => entry.slug === product.categorySlug)?.name ?? ""}</p><h3>{product.name}</h3><p>{product.description}</p><p className="availability">{formatMenuPrice(product.price)}</p><div className="product-tabs" role="tablist" aria-label="Featured products">{featuredProducts.map((item, index) => <button key={item.id} role="tab" aria-selected={featured === index} onClick={() => setFeatured(index)}>{item.name}</button>)}</div></div></div>
       </Container>
-    </section>
+    </section> : null}
 
-    <section className="section atmosphere-section">
-      <Container className="atmosphere-grid"><div className="section-copy"><p className="eyebrow">Room For The Moment</p><h2>MORE THAN<br />A CAFE</h2><p>Whether you are here for a quiet coffee, a game with friends, a study session, or your favorite match, LQMAH makes room for the moment.</p></div>{images.atmosphere.map((src, index) => <figure key={src} className={`atmosphere-shot atmosphere-shot--${index + 1}`}><MediaFallback src={src} alt={["Chess with coffee", "Friends gathering at the cafe", "Live sports atmosphere"][index]} sizes="(max-width: 768px) 100vw, 40vw" /><figcaption>{["Play", "Gather", "Stay"][index]}</figcaption></figure>)}</Container>
-    </section>
+    {atmosphere ? <section className="section atmosphere-section">
+      <Container className="atmosphere-grid"><div className="section-copy">{atmosphere.eyebrow ? <p className="eyebrow">{atmosphere.eyebrow}</p> : null}<h2>{headingContent(atmosphere)}</h2>{atmosphere.body ? <p>{atmosphere.body}</p> : null}</div>{atmosphereImages.map((image) => <figure key={image.position} className={`atmosphere-shot atmosphere-shot--${image.position}`}><MediaFallback src={image.imageUrl} alt={image.altText} sizes="(max-width: 768px) 100vw, 40vw" /><figcaption>{image.caption}</figcaption></figure>)}</Container>
+    </section> : null}
 
-    <section className="interior-story"><MediaFallback src={images.interior[0]} alt="Comfortable LQMAH seating and warm lighting" /><div className="interior-overlay" /><Container className="interior-copy"><p className="eyebrow">The Atmosphere</p><h2>DESIGNED<br />TO MAKE YOU STAY</h2><p>Warm light, considered details, and comfortable tables create a setting that feels refined without losing its welcome.</p></Container></section>
+    {interiorStory ? <section className="interior-story"><MediaFallback src={interiorStory.imageUrl ?? images.interior[0]} alt={interiorStory.imageAlt ?? ""} /><div className="interior-overlay" /><Container className="interior-copy">{interiorStory.eyebrow ? <p className="eyebrow">{interiorStory.eyebrow}</p> : null}<h2>{headingContent(interiorStory)}</h2>{interiorStory.body ? <p>{interiorStory.body}</p> : null}</Container></section> : null}
 
-    <section id="reviews" className="section section--burgundy"><Container><div className="section-heading"><p className="eyebrow">Real Guest Reviews</p><h2>WHAT OUR<br />GUESTS SAY</h2></div><div className="reviews-grid">{testimonials.map((review) => <blockquote key={review.name}><div aria-label={`${review.rating} out of 5 stars`}>★★★★★</div><p>“{review.review}”</p><footer><strong>{review.name}</strong><span>{review.date}</span><span><a href={lqmahLocation.directionsUrl} target="_blank" rel="noopener noreferrer">{review.source}</a></span></footer></blockquote>)}</div></Container></section>
+    {reviewsSection ? <section id="reviews" className="section section--burgundy"><Container><div className="section-heading">{reviewsSection.eyebrow ? <p className="eyebrow">{reviewsSection.eyebrow}</p> : null}<h2>{headingContent(reviewsSection)}</h2></div><div className="reviews-grid">{reviews.map((review) => <blockquote key={review.id}><ReviewStars rating={review.rating} /><p>“{review.review}”</p><footer><strong>{review.name}</strong><span>{review.date}</span><span>{contact.mapUrl ? <a href={contact.mapUrl} target="_blank" rel="noopener noreferrer">{review.source}</a> : review.source}</span></footer></blockquote>)}</div></Container></section> : null}
 
-    <section id="contact" className="section section--cream"><Container className="visit-grid"><div className="section-copy"><p className="eyebrow">Visit LQMAH</p><h2>COME FIND<br />YOUR FAVORITE TABLE</h2><div className="visit-details"><p><MapPin />LQMAH</p><p><Clock />{business.hours[0]}</p></div><div className="button-row"><Link className="button button--primary" href="/contact">Contact Us</Link><a className="button button--outline" href={lqmahLocation.directionsUrl} target="_blank" rel="noopener noreferrer" aria-label="Get directions to LQMAH on Google Maps">Get Directions</a></div></div><div className="map-placeholder"><iframe src={lqmahLocation.embedUrl} title="LQMAH location on Google Maps" loading="lazy" referrerPolicy="no-referrer-when-downgrade" /></div></Container></section>
+    {visit ? <section id="contact" className="section section--cream"><Container className="visit-grid"><div className="section-copy">{visit.eyebrow ? <p className="eyebrow">{visit.eyebrow}</p> : null}<h2>{headingContent(visit)}</h2><div className="visit-details"><p><MapPin />LQMAH</p>{contact.hoursGroups.length ? <p><Clock /><span>{contact.hoursGroups.map((group, index) => <span key={group.label}>{group.line}{index < contact.hoursGroups.length - 1 ? <br /> : null}</span>)}</span></p> : null}</div><div className="button-row">{visit.ctaLabel ? <Link className="button button--primary" href="/contact">{visit.ctaLabel}</Link> : null}{contact.mapUrl && visit.ctaSecondaryLabel ? <a className="button button--outline" href={contact.mapUrl} target="_blank" rel="noopener noreferrer" aria-label="Get directions to LQMAH on Google Maps">{visit.ctaSecondaryLabel}</a> : null}</div></div>{contact.mapEmbedUrl ? <div className="map-placeholder"><iframe src={contact.mapEmbedUrl} title="LQMAH location on Google Maps" loading="lazy" referrerPolicy="no-referrer-when-downgrade" /></div> : null}</Container></section> : null}
 
-    <section className="final-cta"><Container><p className="arabic-accent" lang="ar">أهلاً بكم</p><h2>YOUR TABLE<br />IS WAITING</h2><p>Come for the coffee. Stay for the atmosphere.</p><div className="button-row"><Link className="button button--light" href="/menu">Explore Menu</Link></div></Container></section>
+    {finalCta ? <section className="final-cta"><Container>{finalCta.arabicAccent ? <p className="arabic-accent" lang="ar">{finalCta.arabicAccent}</p> : null}<h2>{headingContent(finalCta)}</h2>{finalCta.body ? <p>{finalCta.body}</p> : null}<div className="button-row">{finalCta.ctaLabel && finalCta.ctaHref ? <Link className="button button--light" href={finalCta.ctaHref}>{finalCta.ctaLabel}</Link> : null}</div></Container></section> : null}
   </>;
 }

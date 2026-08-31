@@ -7,19 +7,6 @@ export const navigation = [
   { label: "Contact", href: "/contact" },
 ] as const;
 
-export const business = {
-  address: "Address to be confirmed",
-  phone: "Phone to be confirmed",
-  email: "Email to be confirmed",
-  hours: ["Opening hours to be confirmed"],
-  directionsUrl: "#",
-} as const;
-
-export const socials = [
-  { label: "Instagram", href: "#" },
-  { label: "Facebook", href: "#" },
-] as const;
-
 export const testimonials = [
   {
     name: "Gazem Ali",
