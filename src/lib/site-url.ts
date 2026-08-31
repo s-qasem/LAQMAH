@@ -40,7 +40,7 @@ function resolveSiteUrl(): string {
   if (process.env.NODE_ENV === "production") {
     throw new Error(
       "NEXT_PUBLIC_SITE_URL is required for a production build. " +
-        "Set it to the public origin, for example https://laqmah.com, so the sitemap, " +
+        "Set it to the public origin, for example https://lqmah.com, so the sitemap, " +
         "robots.txt and metadataBase reference the real domain.",
     );
   }
