@@ -1,60 +1,153 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LQMAH Café ☕
 
-## Supabase
+A full-stack web experience with a custom content management system, built for a real café business.  
 
-Copy `.env.example` to `.env.local` and add the project URL and anon key. The local
-development environment is already configured on this machine.
+🌐 **Live Website:** https://lqmah-cafe.vercel.app
 
-- Use `createServerSupabaseClient` from `src/lib/supabase/server.ts` in Server
-  Components, Server Actions, and Route Handlers.
-- Use `createBrowserSupabaseClient` from `src/lib/supabase/client.ts` in Client
-  Components.
+---
 
-The anon key is safe to expose to the browser only when every table has appropriate
-Row Level Security policies. Never place a Supabase service-role key in a
-`NEXT_PUBLIC_` variable.
+## ✦ About the Project
 
-### Homepage hero content
+LQMAH is a real client project built to give the café a modern online presence while making day-to-day website management simple.
 
-Run `supabase/migrations/20260811000000_create_homepage_hero.sql` in the Supabase
-SQL Editor. Then edit the single `homepage_hero` row in the Table Editor. Changes
-are refreshed on the website within about 60 seconds.
+Instead of creating only a static website, I built a custom administration system that allows website content to be managed without editing the code.
 
-Hero images can be uploaded to the public `website-content` Storage bucket. Paste
-their public URLs into `desktop_image_url` and `mobile_image_url`. Anonymous website
-visitors can read published hero content and images, but cannot modify them.
+I handled the design, development, database integration, admin experience, and deployment.
 
-## Getting Started
+---
 
-First, run the development server:
+## ✦ Features
+
+### Customer Website
+
+- Responsive café website
+- Dynamic homepage content
+- Menu presentation
+- Gallery
+- Customer reviews
+- Contact information
+- Mobile-friendly interface
+
+### Custom Admin Dashboard
+
+The project includes a custom administrative dashboard for managing website content.
+
+Administrators can manage:
+
+- Homepage content
+- Menu items
+- Gallery content
+- Reviews
+- Website information
+- Administrative access
+
+Changes made through the dashboard are stored in the database and reflected on the website.
+
+---
+
+## ✦ Tech Stack
+
+**Frontend**
+- Next.js
+- React
+- TypeScript
+- CSS
+
+**Backend & Database**
+- Supabase
+- PostgreSQL
+- Row Level Security (RLS)
+
+**Development & Deployment**
+- Git
+- GitHub
+- Vercel
+
+---
+
+## ✦ Architecture
+
+The public website and administrative dashboard share a Supabase-backed content management system.
+
+```text
+                    LQMAH
+                      │
+          ┌───────────┴───────────┐
+          │                       │
+    Public Website          Admin Dashboard
+          │                       │
+          └───────────┬───────────┘
+                      │
+                   Next.js
+                      │
+                   Supabase
+                 ┌────┴────┐
+                 │         │
+            PostgreSQL    Auth
+                 │
+                RLS
+```
+
+---
+
+## ✦ Security
+
+The project uses Supabase Row Level Security policies to control access to database resources.
+
+Environment-specific credentials are kept outside the repository using environment variables.
+
+The application separates browser-side and server-side Supabase access where appropriate.
+
+> Sensitive credentials and production secrets are not stored in this repository.
+
+---
+
+## ✦ What I Built
+
+This project gave me hands-on experience across the full lifecycle of a web application:
+
+- Designing the user experience
+- Building reusable frontend components
+- Creating a custom CMS
+- Designing database-backed content
+- Implementing administrative functionality
+- Working with authentication and access controls
+- Configuring Supabase Row Level Security
+- Managing environment variables
+- Deploying and maintaining a production application
+
+---
+
+## ✦ Project Status
+
+🟢 **Live / Production**
+
+The application is deployed on Vercel and connected to its production backend.
+
+---
+
+## ✦ Local Development
+
+Clone the repository and install the dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create a `.env.local` file using `.env.example` as a reference for the required environment variables.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Never commit production secrets or service-role credentials to the repository.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## ✦ Credits
 
-To learn more about Next.js, take a look at the following resources:
+Designed and developed by **Safa Qasem**.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Built as a client project under **ArtiCode**.
