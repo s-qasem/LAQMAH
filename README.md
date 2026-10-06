@@ -1,6 +1,6 @@
 # LQMAH Café ☕
 
-A full-stack web experience with a custom content management system, built for a real café business.  
+A full-stack web experience with a custom content management system, built for a real café business.
 
 🌐 **Live Website:** https://lqmah-cafe.vercel.app
 
@@ -28,17 +28,24 @@ I handled the design, development, database integration, admin experience, and d
 - Contact information
 - Mobile-friendly interface
 
+The customer-facing experience was designed to work across desktop and mobile devices.
+
+![LQMAH Mobile Website](LQMAH-Mobile.png)
+
 ### Custom Admin Dashboard
 
 The project includes a custom administrative dashboard for managing website content.
 
+![LQMAH Admin Dashboard](LQMAH-Admin-Dashboard.png)
+
 Administrators can manage:
 
 - Homepage content
-- Menu items
-- Gallery content
-- Reviews
-- Website information
+- Menu categories and products
+- Gallery content and media
+- Customer reviews
+- Contact information and business hours
+- Social media links
 - Administrative access
 
 Changes made through the dashboard are stored in the database and reflected on the website.
