@@ -127,9 +127,13 @@ This project gave me hands-on experience across the full lifecycle of a web appl
 
 ## ✦ Project Status
 
-🟢 **Live / Production**
+🟡 **In Active Development**
 
-The application is deployed on Vercel and connected to its production backend.
+LQMAH is live and functional, but I'm still improving and expanding parts of the project.
+
+The menu experience in particular is still being developed and refined, along with smaller UI and content improvements throughout the site.
+
+The current deployment represents the latest working version, not the final product.
 
 ---
 
